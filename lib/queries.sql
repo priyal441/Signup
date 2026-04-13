@@ -1,0 +1,37 @@
+CREATE DATABASE IF NOT EXISTS auth_app;
+USE auth_app;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  email VARCHAR(100) UNIQUE,
+  phone VARCHAR(15) UNIQUE,
+  password VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Login history table
+CREATE TABLE IF NOT EXISTS login_history (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  email VARCHAR(100),:RENT_TIMESTAMP
+);
+
+
+-- OTP table
+CREATE TABLE IF NOT EXISTS password_resets (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(100),
+  otp VARCHAR(6),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  expires_at TIMESTAMP
+);
+
+
+SHOW TABLES;
+DESCRIBE users;
+SELECT * FROM users;
+SELECT * FROM login_history;
+SELECT * FROM password_resets;
+
+

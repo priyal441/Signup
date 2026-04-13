@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model login_history {
+  id         Int       @id @default(autoincrement())
+  user_id    Int?
+  email      String?   @db.VarChar(100)
+  login_time DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model password_resets {
+  id         Int       @id @default(autoincrement())
+  email      String?   @db.VarChar(100)
+  otp        String?   @db.VarChar(6)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  expires_at DateTime? @db.Timestamp(0)
+}
+
+model users {
+  id         Int        @id @default(autoincrement())
+  name       String?    @db.VarChar(100)
+  email      String?    @unique(map: "email") @db.VarChar(100)
+  phone      String?    @unique(map: "phone") @db.VarChar(15)
+  password   String?    @db.VarChar(255)
+  created_at DateTime?  @default(now()) @db.Timestamp(0)
+  sessions   sessions[]
+}
+
+model otp_verifications {
+  id         Int       @id @default(autoincrement())
+  email      String    @db.VarChar(100)
+  otp        String    @db.VarChar(6)
+  created_at DateTime? @default(now())
+  is_used    Boolean   @default(false)
+}
+
+model sessions {
+  id         Int      @id @default(autoincrement())
+  session_id String   @unique @db.VarChar(64)
+  user_id    Int
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  expires_at DateTime @db.Timestamp(0)
+  users      users    @relation(fields: [user_id], references: [id])
+}
